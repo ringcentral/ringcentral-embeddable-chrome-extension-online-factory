@@ -20,7 +20,7 @@ const execAsync = (cmd, options = {
 
 function readYml (path) {
   // Get document, or throw exception on error
-  return yaml.safeLoad(
+  return yaml.load(
     readFileSync(path, 'utf8')
   )
 }
@@ -35,9 +35,9 @@ async function run () {
   const file = resolve(__dirname, '../serverless-deploy/env.yml')
   const yml = readYml(file)
   console.log(yml, 'yml')
-  const url = yml.RINGCENTRAL_CHATBOT_SERVER
+  const url = yml.SERVER
   // if (!url || !/^https:\/\/.+\.amazonaws\.com.+/.test(url)) {
-  //   console.log('please set correct RINGCENTRAL_CHATBOT_SERVER in dist/.env.yml')
+  //   console.log('please set correct SERVER in dist/.env.yml')
   //   process.exit(1)
   // }
   const cmd1 = 'npm i --production'
@@ -57,11 +57,11 @@ async function run () {
     return log('build fails')
   }
   const urlReal = `${arr[1]}/prod`
-  log(`RINGCENTRAL_CHATBOT_SERVER in api gate way: ${urlReal}`)
+  log(`SERVER in api gate way: ${urlReal}`)
   if (urlReal !== url) {
-    log('modify RINGCENTRAL_CHATBOT_SERVER in deploy/.env.yml')
-    yml.RINGCENTRAL_CHATBOT_SERVER = urlReal
-    const newYml = yaml.safeDump(yml)
+    log('modify SERVER in deploy/.env.yml')
+    yml.SERVER = urlReal
+    const newYml = yaml.dump(yml)
     writeFileSync(file, newYml)
     run()
   } else {
