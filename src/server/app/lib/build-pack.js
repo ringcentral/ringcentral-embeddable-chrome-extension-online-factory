@@ -9,8 +9,8 @@ import {
   TEMP_DIR,
   FILE_PREFIX
 } from '../common/constants'
-import { zip } from 'zip-a-folder'
 import _ from 'lodash'
+import tar from 'tar'
 
 const cwd = process.cwd()
 
@@ -59,15 +59,20 @@ async function edit (folder, options) {
 
 export async function build (options, md5) {
   const from = resolve(cwd, 'node_modules/ringcentral-chrome-extension-template-spa/dist')
+  const name = `${FILE_PREFIX}-${md5}`
   const to = resolve(
     TEMP_DIR,
-    `${FILE_PREFIX}-${md5}`
+    name
   )
   await copy(from, to)
   await edit(to, options)
-  const to2 = `${to}.zip`
-  await zip(to, to2)
+  const to2 = `${name}.tar.gz`
+  await tar.c({
+    cwd: TEMP_DIR,
+    gzip: true,
+    file: resolve(TEMP_DIR, to2)
+  }, [name])
   return {
-    file: `${FILE_PREFIX}-${md5}.zip`
+    file: to2
   }
 }

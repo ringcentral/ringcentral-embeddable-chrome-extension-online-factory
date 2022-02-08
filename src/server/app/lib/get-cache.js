@@ -21,7 +21,7 @@ function checkExist (file) {
 
 export async function getCache (options) {
   const id = md5(options)
-  const fname = `${FILE_PREFIX}-${id}.zip`
+  const fname = `${FILE_PREFIX}-${id}.tar.gz`
   const path = resolve(TEMP_DIR, fname)
   await clean()
   const exist = await checkExist(path)
