@@ -21,10 +21,11 @@
     "clean": "node build/clean.js",
     "build-lambda": "npm run clean && node cmds/build && npm run view",
     "deploy-lambda": "node cmds/deploy",
-    "watch": "cd deploy && ../node_modules/.bin/sls logs -f app -t",
+    "watch": "cd serverless-deploy && ../node_modules/.bin/sls logs -f app -t",
     "lint": "standard"
   },
   "dependencies": {
+    "@babel/runtime": "^7.17.0",
     "dayjs": "^1.10.7",
     "express": "^4.17.1",
     "fs-extra": "^10.0.0",
