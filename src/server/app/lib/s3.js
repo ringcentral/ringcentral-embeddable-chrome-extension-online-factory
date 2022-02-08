@@ -31,14 +31,15 @@ AWS.Request.prototype.forwardToExpress = function forwardToExpress (res, next) {
       }
     })
     .createReadStream()
-    .on('data', (chunk) => res.write(chunk))
-    .once('end', () => {
-      res.end()
-    })
+    // .on('data', (chunk) => res.write(chunk))
+    // .once('end', () => {
+    //   res.end()
+    // })
     // .on('error', () => {
     //   res.end()
     // })
     .on('error', next)
+    .pipe(res)
 }
 
 const { S3 } = AWS
