@@ -7,9 +7,12 @@ import {
   verify,
   build
 } from '../lib/build-pack'
+// import {
+//   TEMP_DIR
+// } from '../common/constants'
 import {
-  TEMP_DIR
-} from '../common/constants'
+  downloadFile
+} from '../lib/s3'
 import { getCache } from '../lib/get-cache'
 
 async function create (req, res) {
@@ -19,7 +22,7 @@ async function create (req, res) {
     return res.status(400).send(ok.error)
   }
   const st = await getCache(body)
-  if (st.file) {
+  if (st && st.file) {
     return res.send(st)
   }
   const { md5 } = st
@@ -27,11 +30,15 @@ async function create (req, res) {
   res.send(r)
 }
 
-async function download (req, res) {
+async function download (req, res, next) {
   const {
     name
   } = req.params
-  res.sendFile(`${TEMP_DIR}/${name}`)
+  const stream = await downloadFile(name)
+  if (!stream) {
+    return res.status(404).send('file not exist')
+  }
+  stream.forwardToExpress(res, next)
 }
 
 export default (app) => {

@@ -11,6 +11,9 @@ import {
 } from '../common/constants'
 import _ from 'lodash'
 import tar from 'tar'
+import {
+  uploadFile
+} from './s3'
 
 const cwd = process.cwd()
 
@@ -67,11 +70,13 @@ export async function build (options, md5) {
   await copy(from, to)
   await edit(to, options)
   const to2 = `${name}.tar.gz`
+  const to2path = resolve(TEMP_DIR, to2)
   await tar.c({
     cwd: TEMP_DIR,
     gzip: true,
-    file: resolve(TEMP_DIR, to2)
+    file: to2path
   }, [name])
+  await uploadFile(to2path)
   return {
     file: to2
   }
