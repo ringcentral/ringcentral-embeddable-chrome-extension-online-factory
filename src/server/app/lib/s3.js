@@ -17,18 +17,28 @@ if (AWS_PROFILE) {
   })
   AWS.config.credentials = credentials
 }
+
 AWS.Request.prototype.forwardToExpress = function forwardToExpress (res, next) {
   this
     .on('httpHeaders', function (code, headers) {
       if (code < 300) {
         res.set(
-          _.pick(headers, 'content-type', 'content-length', 'last-modified')
+          _.pick(
+            headers,
+            ['content-type', 'content-length', 'last-modified', 'ETag']
+          )
         )
       }
     })
     .createReadStream()
+    .on('data', (chunk) => res.write(chunk))
+    .once('end', () => {
+      res.end()
+    })
+    // .on('error', () => {
+    //   res.end()
+    // })
     .on('error', next)
-    .pipe(res)
 }
 
 const { S3 } = AWS
