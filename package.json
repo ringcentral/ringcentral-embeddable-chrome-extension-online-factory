@@ -1,6 +1,6 @@
 {
   "name": "ringcentral-embeddable-chrome-extension-online-factory",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Online tool to create ringcentral-embeddable chrome extension, quick way to create embeddable phone for any website",
   "main": "index.js",
   "keywords": [

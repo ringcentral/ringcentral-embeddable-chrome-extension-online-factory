@@ -25,7 +25,7 @@ AWS.Request.prototype.forwardToExpress = function forwardToExpress (res, next) {
         res.set(
           _.pick(
             headers,
-            ['content-type', 'content-length', 'last-modified', 'ETag']
+            ['content-type', 'content-length', 'last-modified']
           )
         )
       }
