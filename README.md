@@ -10,7 +10,7 @@ Just visit [https://hhpjolgwy8.execute-api.us-east-1.amazonaws.com/prod/app](htt
 
 ## Video demo
 
-todo
+[https://youtu.be/NfrWjXIrFxM](https://youtu.be/NfrWjXIrFxM)
 
 ## More customization
 
