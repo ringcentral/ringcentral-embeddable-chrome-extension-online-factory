@@ -2,6 +2,9 @@
 import { Form, Input, Button, Tooltip } from 'antd'
 import { PlusOutlined, MinusCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 
+import img1 from '../../imgs/ss1.png'
+import img2 from '../../imgs/ss2.png'
+
 const { Item, List } = Form
 
 export default function FormVote (props) {
@@ -88,6 +91,16 @@ export default function FormVote (props) {
       </div>
     )
   }
+  function phoneNumberSelectorTooltip () {
+    return (
+      <div>
+        <p><img className='screenshot' src={img1} alt='screenshot1' /></p>
+        <p>Add click to call tooltip to phone number.</p>
+        <p><img className='screenshot' src={img2} alt='screenshot1' /></p>
+        <p>You can get css selector with developer tool</p>
+      </div>
+    )
+  }
   async function doSubmit (res) {
     const r = await props.submit(res)
     if (r) {
@@ -163,7 +176,21 @@ export default function FormVote (props) {
         name: 'excludeMatches',
         minLength: 0,
         title: 'exclude match',
-        placeholder: 'https://url-will-be-exluded.my-site.com/*'
+        placeholder: 'https://sub-url-to-exclude.my-site.com/*'
+      })}
+      <div>
+        <span>Phone number css selector(Add click to call tooltip to phone numbers in the page)</span>
+        <Tooltip
+          title={phoneNumberSelectorTooltip()}
+        >
+          <QuestionCircleOutlined className='mg1l' />
+        </Tooltip>
+      </div>
+      {renderList({
+        name: 'phoneSelectors',
+        minLength: 0,
+        title: 'phone number css selector',
+        placeholder: '.page .phone'
       })}
       <Item>
         <Button

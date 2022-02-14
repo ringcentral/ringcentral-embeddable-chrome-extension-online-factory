@@ -34,7 +34,8 @@ export default class View extends Component {
         }
       ],
       excludeMatches: [
-      ]
+      ],
+      phoneSelectors: []
     },
     file: '',
     tab: 'basic' // or advanced
@@ -56,7 +57,8 @@ export default class View extends Component {
     const inst = {
       ...res,
       matches: res.matches.map(d => d.title),
-      excludeMatches: res.excludeMatches.map(d => d.title)
+      excludeMatches: res.excludeMatches.map(d => d.title),
+      phoneSelectors: res.phoneSelectors.map(d => d.title)
     }
     const r = await createExt(inst)
     if (r && r.file) {

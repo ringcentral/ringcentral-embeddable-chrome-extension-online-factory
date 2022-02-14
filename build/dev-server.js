@@ -26,7 +26,7 @@ module.exports = {
     '/': {
       target: `http://${env.SERVER_HOST}:${env.SERVER_PORT}`,
       bypass: function (req, res, proxyOptions) {
-        if (req.path.includes('.bundle.')) {
+        if (req.path.includes('.bundle.') || req.path.includes('.png')) {
           return req.path
         }
       }

@@ -39,15 +39,23 @@ export function verify (options) {
   return true
 }
 
+function buildPhoneSelector (arr) {
+  return arr.map(sel => {
+    return `{shouldAct: () => true,selector: '${sel}'}`
+  }).join(',')
+}
+
 async function edit (folder, options) {
   const fest = resolve(folder, 'manifest.json')
+  const content = resolve(folder, 'content.js')
   let str = await readFile(fest)
     .then(r => r.toString())
   const {
     name,
     desc,
     matches = [],
-    excludeMatches = []
+    excludeMatches = [],
+    phoneSelectors = []
   } = options
   str = str.replace(/"name": "[^"]+",/, `"name": "${name}",`)
   str = str.replace(/"matches": \[[^[\]]+\]+,/, `"matches": ${parser(matches)},`)
@@ -56,6 +64,12 @@ async function edit (folder, options) {
   }
   if (excludeMatches.length) {
     str = str.replace('"exclude_matches": []', `"exclude_matches": ${parser(excludeMatches)}`)
+  }
+  if (phoneSelectors.length) {
+    let strContent = await readFile(content)
+      .then(r => r.toString())
+    strContent = strContent.replace('phoneNumberSelectors = []', `phoneNumberSelectors = [${buildPhoneSelector(phoneSelectors)}]`)
+    await writeFile(content, strContent)
   }
   await writeFile(fest, str)
 }
